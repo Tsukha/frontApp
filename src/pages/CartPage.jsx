@@ -49,8 +49,15 @@ const CartPage = () => {
               <div className="cart-items">
                 {cartItems.map((item) => (
                   <div key={item.id} className="cart-item">
-                    <div className="cart-item-image">
-                      <Coffee size={48} />
+                    <div
+                      // className="cart-item-image"
+                      className="w-48 h-32 object-cover rounded-lg flex-shrink-0"
+                    >
+                      <img
+                        src={item.coffee.image}
+                        alt={item.coffee.name}
+                        className=""
+                      />
                     </div>
                     <div className="cart-item-details">
                       <h3 className="cart-item-title">{item.coffee.name}</h3>
