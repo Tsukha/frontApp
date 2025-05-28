@@ -2,12 +2,17 @@ import React, { useState } from "react";
 import { X, Coffee } from "lucide-react";
 import { useCart } from "../contexts/CartContext";
 import { useCurrency } from "../contexts/CurrencyContext";
-import { ingredientsData } from "../data/coffeeData";
+import useFetch from "../hooks/useFetch";
 
 const CoffeeModal = () => {
   const { isModalOpen, selectedCoffee, closeModal, addToCart } = useCart();
   const { convertPrice, getCurrencySymbol } = useCurrency();
   const [selectedIngredients, setSelectedIngredients] = useState([]);
+  const { response } = useFetch({
+    url: "http://localhost:5000/api/v1/resource/ingredients",
+    method: "GET",
+  });
+  if (!response) return <>loading</>;
 
   if (!isModalOpen || !selectedCoffee) return null;
 
@@ -62,7 +67,7 @@ const CoffeeModal = () => {
         <div className="modal-body">
           <h3 className="ingredients-title">Select Additional Ingredients:</h3>
           <div className="ingredients-list">
-            {ingredientsData.map((ingredient) => (
+            {response[0].data.map((ingredient) => (
               <div key={ingredient.id} className="ingredient-item">
                 <label className="ingredient-label">
                   <input

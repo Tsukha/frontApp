@@ -5,16 +5,20 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { useCurrency } from "../contexts/CurrencyContext";
 import { useCart } from "../contexts/CartContext";
-import { coffeeData } from "../data/coffeeData";
+import useFetch from "../hooks/useFetch";
 
 const CoffeeDetailPage = () => {
+  const { response } = useFetch({
+    url: "http://localhost:5000/api/v1/resource/coffees",
+    method: "GET",
+  });
   const { id } = useParams();
   const { convertPrice, getCurrencySymbol } = useCurrency();
   const { openModal } = useCart();
-  const coffee = coffeeData.find((c) => c.id === parseInt(id));
+  if (!response) return <>loading</>;
+  const coffee = response[0].data.find((c) => c.id === parseInt(id));
 
   if (!coffee) return <div>Coffee not found</div>;
-
   return (
     <div className="app-container">
       <Sidebar currentPath="/coffee" />

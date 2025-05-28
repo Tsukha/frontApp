@@ -2,9 +2,14 @@ import React from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import CoffeeCard from "../components/coffeeCard";
-import { coffeeData } from "../data/coffeeData";
+import useFetch from "../hooks/useFetch";
 
 const CoffeePage = () => {
+  const { response } = useFetch({
+    url: "http://localhost:5000/api/v1/resource/coffees",
+    method: "GET",
+  });
+  if (!response) return <>loading</>;
   return (
     <div className="app-container">
       <Sidebar currentPath="/coffee" />
@@ -12,7 +17,7 @@ const CoffeePage = () => {
         <Header title="Coffee Selection" />
         <div className="page-content">
           <div className="coffee-grid">
-            {coffeeData.map((coffee) => (
+            {response[0].data.map((coffee) => (
               <CoffeeCard key={coffee.id} coffee={coffee} />
             ))}
           </div>

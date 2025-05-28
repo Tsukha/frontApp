@@ -45,7 +45,7 @@ const CurrencyProvider = ({ children }) => {
     if (currency === "USD") {
       return (gelPrice / exchangeRate).toFixed(2);
     }
-    return gelPrice.toFixed(2);
+    return gelPrice?.toFixed(2);
   };
 
   const getCurrencySymbol = () => (currency === "USD" ? "$" : "₾");

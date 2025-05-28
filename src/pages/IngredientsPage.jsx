@@ -3,19 +3,16 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { useCurrency } from "../contexts/CurrencyContext";
-import { ingredientsData } from "../data/coffeeData";
+import useFetch from "../hooks/useFetch";
 
 const IngredientsPage = () => {
   const { convertPrice, getCurrencySymbol } = useCurrency();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: "",
-    price: "",
-    strength: "",
-    flavor: "",
-    description: "",
+  const { response } = useFetch({
+    url: "http://localhost:5000/api/v1/resource/ingredients",
+    method: "GET",
   });
-
+  if (!response) return <>loading</>;
   return (
     <div className="app-container">
       <Sidebar currentPath="/ingredients" />
@@ -35,7 +32,7 @@ const IngredientsPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {ingredientsData.map((ingredient, index) => (
+                {response[0].data.map((ingredient, index) => (
                   <tr key={ingredient.id} className="table-row">
                     <td className="table-cell">{ingredient.id}</td>
                     <td className="table-cell name">{ingredient.name}</td>

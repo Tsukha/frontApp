@@ -4,12 +4,17 @@ import { ArrowLeft } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { useCurrency } from "../contexts/CurrencyContext";
-import { ingredientsData } from "../data/coffeeData";
+import useFetch from "../hooks/useFetch";
 
 const IngredientDetailPage = () => {
   const { id } = useParams();
   const { convertPrice, getCurrencySymbol } = useCurrency();
-  const ingredient = ingredientsData.find((i) => i.id === id);
+  const { response } = useFetch({
+    url: "http://localhost:5000/api/v1/resource/ingredients",
+    method: "GET",
+  });
+  if (!response) return <>loading</>;
+  const ingredient = response[0].data.find((i) => i.id === id);
 
   if (!ingredient) return <div>Ingredient not found</div>;
 
